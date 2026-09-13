@@ -66,6 +66,7 @@
   .btn{
     padding:13px 21px;border-radius:999px;font-weight:800;border:1px solid var(--border);
     transition:.2s transform,.2s background;
+    display:inline-block;
   }
   .btn:hover{transform:translateY(-2px)}
   .primary{background:linear-gradient(135deg,var(--blue),#3f78b9);color:#07101b;border:0}
@@ -120,36 +121,15 @@
 
   .section-intro{max-width:700px;color:var(--muted);margin:-10px 0 34px}
   .platform-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}
-  .platform{background:linear-gradient(145deg,rgba(244,234,215,.06),rgba(127,184,255,.035));border:1px solid var(--border);border-radius:24px;padding:24px;box-shadow:0 20px 60px rgba(0,0,0,.22)}
-  .platform-head{display:flex;justify-content:space-between;align-items:flex-start;padding-bottom:18px;border-bottom:1px solid var(--border);margin-bottom:18px}
+  .platform{background:linear-gradient(145deg,rgba(244,234,215,.06),rgba(127,184,255,.035));border:1px solid var(--border);border-radius:24px;padding:24px;box-shadow:0 20px 60px rgba(0,0,0,.22);display:flex;flex-direction:column;align-items:flex-start;gap:20px}
+  .platform-head{display:flex;justify-content:space-between;align-items:flex-start;width:100%}
   .platform-label{display:block;font-size:.78rem;font-weight:900;letter-spacing:.14em;color:#cfcfd6}
   .platform-handle{display:block;color:var(--muted);font-size:.9rem;margin-top:3px}
   .platform-dot{color:var(--blue);font-size:1.5rem;line-height:1}
-  .stat-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
-  .stat{background:rgba(255,255,255,.035);border:1px solid rgba(255,255,255,.055);border-radius:16px;padding:15px;min-height:92px}
-  .stat span{display:block;color:var(--muted);font-size:.78rem;text-transform:uppercase;letter-spacing:.08em;font-weight:800}
-  .stat strong{display:block;font-size:1.55rem;letter-spacing:-.04em;margin-top:6px}
-  .stat small{display:block;color:#9ee493;font-size:.7rem;margin-top:2px}
-  .mini-section{margin-top:22px;padding-top:20px;border-top:1px solid var(--border)}
-  .mini-section h3{margin:0 0 14px;font-size:.86rem;text-transform:uppercase;letter-spacing:.12em}
-  .split{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:18px}
-  .split div{background:rgba(127,184,255,.075);border-radius:14px;padding:13px 14px}
-  .split b{font-size:1.25rem;display:block}
-  .split span{color:var(--muted);font-size:.78rem}
-  .bar-row{display:grid;grid-template-columns:1fr auto;gap:5px 12px;align-items:center;margin:11px 0}
-  .bar-row span{font-size:.86rem}
-  .bar-row b{font-size:.8rem;color:#ddd}
-  .bar-row i{grid-column:1/-1;display:block;height:7px;border-radius:999px;background:rgba(127,184,255,.12);overflow:hidden}
-  .bar-row em{display:block;height:100%;border-radius:999px;background:linear-gradient(90deg,var(--blue2),var(--blue))}
   @media (max-width:760px){
     .platform-grid{grid-template-columns:1fr}
     .platform{padding:18px;border-radius:20px}
   }
-  @media (max-width:430px){
-    .stat{min-height:84px;padding:12px}
-    .stat strong{font-size:1.3rem}
-  }
-
 
   /* Refined luxury balance: cream as an accent, not a whole section */
   .about, .contact, .section-light { background: linear-gradient(135deg,#11151b 0%,#171c23 55%,#202833 100%) !important; color: var(--text) !important; }
@@ -202,14 +182,7 @@
   .about p{color:#505a64 !important}
   .skills .skill{background:rgba(255,248,232,.75);border-color:rgba(21,26,32,.11);color:#20272e}
   .platform{background:linear-gradient(145deg,#f8f3e9,#e1e9f0);border-color:rgba(21,26,32,.12);box-shadow:0 20px 60px rgba(38,47,56,.12)}
-  .platform-label,.platform-handle,.stat span,.split span{color:#59636d}
-  .platform-head{border-color:rgba(21,26,32,.10)}
-  .stat{background:rgba(255,248,232,.72);border-color:rgba(21,26,32,.09)}
-  .stat strong{color:#171d23}
-  .mini-section{border-color:rgba(21,26,32,.10)}
-  .split div{background:rgba(57,120,198,.10)}
-  .bar-row b{color:#303840}
-  .bar-row i{background:rgba(57,120,198,.12)}
+  .platform-label,.platform-handle{color:#59636d}
   .card{background:linear-gradient(145deg,#f8f2e7,#dce5ee);border-color:rgba(21,26,32,.12) !important;box-shadow:0 18px 45px rgba(38,47,56,.13)}
   .card:before{background:radial-gradient(circle at 75% 20%,rgba(57,120,198,.22),transparent 38%)}
   .card h3{color:#182028}
@@ -230,7 +203,7 @@
       <a class="brand" href="#top">JOHN<span>.</span>VELASCO</a>
       <div class="links">
         <a href="#about">About Me</a>
-        <a href="#stats">Stats</a>
+        <a href="#stats">Follow</a>
       <a href="#work">What I Shoot</a>
         <a href="#contact">Contact</a>
       </div>
@@ -276,118 +249,39 @@
     </div>
   </section>
 
-  
-<section id="stats" class="section">
-  <div class="wrap">
-    <div class="section-kicker">SOCIAL PROOF</div>
-    <h2>Audience &amp; Reach</h2>
-    <p class="section-intro">A snapshot of the creative community discovering John’s work across Instagram and TikTok.</p>
+  <section id="stats" class="section">
+    <div class="wrap">
+      <div class="section-kicker">FOLLOW ALONG</div>
+      <h2 class="section-title">Find Me Online</h2>
+      <p class="section-intro">Follow John's cinematic work on Instagram and TikTok.</p>
 
-    <div class="platform-grid">
-      <div class="platform">
-        <div class="platform-head">
-          <div>
-            <span class="platform-label">INSTAGRAM</span>
-            <span class="platform-handle">@cinematiclife.17</span>
+      <div class="platform-grid">
+        <div class="platform">
+          <div class="platform-head">
+            <div>
+              <span class="platform-label">INSTAGRAM</span>
+              <span class="platform-handle">@cinematiclife.17</span>
+            </div>
+            <span class="platform-dot">●</span>
           </div>
-          <span class="platform-dot">●</span>
+          <a class="btn primary" href="https://www.instagram.com/cinematiclife.17/" target="_blank" rel="noopener">Follow on Instagram</a>
         </div>
 
-        <div class="stat-grid">
-          <div class="stat"><span>Followers</span><strong>15.1K</strong></div>
-          <div class="stat"><span>Engagement</span><strong>2.9%</strong></div>
-          <div class="stat"><span>Total posts</span><strong>662</strong></div>
-          <div class="stat"><span>Impressions</span><strong>1.6M</strong></div>
-          <div class="stat"><span>Total engagements</span><strong>54.1K</strong></div>
-          <div class="stat"><span>30-day reach</span><strong>79.9K</strong></div>
-          <div class="stat"><span>Avg. likes</span><strong>604</strong></div>
-          <div class="stat"><span>Avg. comments</span><strong>6</strong></div>
-          <div class="stat"><span>Avg. Reel views</span><strong>18.4K</strong></div>
-          <div class="stat"><span>Avg. watch time</span><strong>10.7s</strong></div>
-          <div class="stat"><span>Reel watch time</span><strong>2.0K hrs</strong></div>
-          <div class="stat"><span>Follower engagement</span><strong>4.07%</strong></div>
-        </div>
-
-        <div class="mini-section">
-          <h3>Audience</h3>
-          <div class="split">
-            <div><b>75.8%</b><span>Male</span></div>
-            <div><b>24.1%</b><span>Female</span></div>
+        <div class="platform">
+          <div class="platform-head">
+            <div>
+              <span class="platform-label">TIKTOK</span>
+              <span class="platform-handle">@cinematiclife.17</span>
+            </div>
+            <span class="platform-dot">●</span>
           </div>
-          <div class="bars">
-            <div class="bar-row"><span>18–24</span><b>39.1%</b><i><em style="width:39.1%"></em></i></div>
-            <div class="bar-row"><span>25–34</span><b>37.9%</b><i><em style="width:37.9%"></em></i></div>
-            <div class="bar-row"><span>13–17</span><b>11%</b><i><em style="width:11%"></em></i></div>
-            <div class="bar-row"><span>35–44</span><b>8%</b><i><em style="width:8%"></em></i></div>
-            <div class="bar-row"><span>45–54</span><b>2.3%</b><i><em style="width:2.3%"></em></i></div>
-          </div>
-        </div>
-
-        <div class="mini-section">
-          <h3>Top countries</h3>
-          <div class="bars">
-            <div class="bar-row"><span>🇮🇳 India</span><b>45.2%</b><i><em style="width:45.2%"></em></i></div>
-            <div class="bar-row"><span>🇧🇩 Bangladesh</span><b>35.5%</b><i><em style="width:35.5%"></em></i></div>
-            <div class="bar-row"><span>🇺🇸 United States</span><b>9%</b><i><em style="width:9%"></em></i></div>
-            <div class="bar-row"><span>🇮🇩 Indonesia</span><b>2.3%</b><i><em style="width:2.3%"></em></i></div>
-            <div class="bar-row"><span>🇸🇬 Singapore</span><b>1.1%</b><i><em style="width:1.1%"></em></i></div>
-            <div class="bar-row"><span>🇵🇰 Pakistan</span><b>1.1%</b><i><em style="width:1.1%"></em></i></div>
-          </div>
-        </div>
-      </div>
-
-      <div class="platform">
-        <div class="platform-head">
-          <div>
-            <span class="platform-label">TIKTOK</span>
-            <span class="platform-handle">@cinematiclife.17</span>
-          </div>
-          <span class="platform-dot">●</span>
-        </div>
-
-        <div class="stat-grid">
-          <div class="stat"><span>Followers</span><strong>1.4K</strong><small>+0.2% / 30 days</small></div>
-          <div class="stat"><span>Engagement</span><strong>5.2%</strong></div>
-          <div class="stat"><span>Total videos</span><strong>644</strong></div>
-          <div class="stat"><span>Impressions</span><strong>10.5K</strong></div>
-          <div class="stat"><span>Total engagements</span><strong>559</strong></div>
-          <div class="stat"><span>Avg. views</span><strong>308</strong></div>
-          <div class="stat"><span>Avg. likes</span><strong>14</strong></div>
-          <div class="stat"><span>Avg. comments</span><strong>2</strong></div>
-        </div>
-
-        <div class="mini-section">
-          <h3>Audience</h3>
-          <div class="split">
-            <div><b>68.7%</b><span>Male</span></div>
-            <div><b>31.3%</b><span>Female</span></div>
-          </div>
-          <div class="bars">
-            <div class="bar-row"><span>35–44</span><b>27.8%</b><i><em style="width:27.8%"></em></i></div>
-            <div class="bar-row"><span>45–54</span><b>23.9%</b><i><em style="width:23.9%"></em></i></div>
-            <div class="bar-row"><span>25–34</span><b>22.4%</b><i><em style="width:22.4%"></em></i></div>
-            <div class="bar-row"><span>55–64</span><b>14.7%</b><i><em style="width:14.7%"></em></i></div>
-            <div class="bar-row"><span>18–24</span><b>11.2%</b><i><em style="width:11.2%"></em></i></div>
-          </div>
-        </div>
-
-        <div class="mini-section">
-          <h3>Top countries</h3>
-          <div class="bars">
-            <div class="bar-row"><span>🇺🇸 United States</span><b>69.9%</b><i><em style="width:69.9%"></em></i></div>
-            <div class="bar-row"><span>🌎 Others</span><b>26.9%</b><i><em style="width:26.9%"></em></i></div>
-            <div class="bar-row"><span>🇵🇭 Philippines</span><b>1.1%</b><i><em style="width:1.1%"></em></i></div>
-            <div class="bar-row"><span>🇬🇧 United Kingdom</span><b>0.6%</b><i><em style="width:0.6%"></em></i></div>
-            <div class="bar-row"><span>🇳🇬 Nigeria</span><b>0.3%</b><i><em style="width:0.3%"></em></i></div>
-            <div class="bar-row"><span>🇲🇽 Mexico</span><b>0.3%</b><i><em style="width:0.3%"></em></i></div>
-          </div>
+          <a class="btn primary" href="https://www.tiktok.com/@cinematiclife.17" target="_blank" rel="noopener">Follow on TikTok</a>
         </div>
       </div>
     </div>
-  </div>
-</section>
+  </section>
 
-<section id="work">
+  <section id="work">
     <div class="wrap">
       <h2 class="section-title">What I Shoot</h2>
       <p class="section-sub">Visual stories across different environments, subjects and moments.</p>
