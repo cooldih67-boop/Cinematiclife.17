@@ -16,29 +16,38 @@ jobs:
       - name: Check out repo
         uses: actions/checkout@v4
 
-      - name: Fetch stats from Instagram Graph API
+      - name: Fetch account stats and latest post
         env:
           IG_ACCESS_TOKEN: ${{ secrets.IG_ACCESS_TOKEN }}
           IG_USER_ID: ${{ secrets.IG_USER_ID }}
         run: |
           curl -s "https://graph.instagram.com/v21.0/${IG_USER_ID}?fields=followers_count,follows_count,media_count&access_token=${IG_ACCESS_TOKEN}" \
-            -o stats.json
-          cat stats.json
+            -o account.json
 
-      - name: Add timestamp to stats file
-        run: |
+          curl -s "https://graph.instagram.com/v21.0/${IG_USER_ID}/media?fields=id,caption,media_type,media_url,thumbnail_url,permalink,timestamp&limit=1&access_token=${IG_ACCESS_TOKEN}" \
+            -o media.json
+
           python3 -c "
 import json
 from datetime import datetime, timezone
 
-with open('stats.json') as f:
-    data = json.load(f)
+with open('account.json') as f:
+    account = json.load(f)
+with open('media.json') as f:
+    media = json.load(f)
 
-data['updated_at'] = datetime.now(timezone.utc).isoformat()
+latest = media.get('data', [{}])[0] if media.get('data') else {}
+
+output = {
+    **account,
+    'latest_post': latest,
+    'updated_at': datetime.now(timezone.utc).isoformat()
+}
 
 with open('stats.json', 'w') as f:
-    json.dump(data, f, indent=2)
+    json.dump(output, f, indent=2)
 "
+          cat stats.json
 
       - name: Commit and push if changed
         run: |
