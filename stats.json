@@ -1,0 +1,11 @@
+{
+  "error": {
+    "message": "Invalid OAuth 2.0 Access Token",
+    "type": "IGApiException",
+    "code": 190,
+    "error_data": {},
+    "fbtrace_id": "AML2kI9HIadCyZONzqGycw7"
+  },
+  "latest_post": {},
+  "updated_at": "2026-09-14T11:04:18.692006+00:00"
+}
