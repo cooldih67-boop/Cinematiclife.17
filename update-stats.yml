@@ -1,0 +1,123 @@
+name: Update Instagram Stats
+
+on:
+  schedule:
+    # Runs every hour. Instagram's video URLs are short-lived signed links,
+    # so refreshing more often keeps them from expiring before someone
+    # actually scrolls to that post. Public repos get free/unlimited Actions
+    # minutes, so this costs nothing extra. Change if you want a different
+    # frequency.
+    - cron: "0 * * * *"
+  workflow_dispatch: {}  # lets you also trigger it manually from the Actions tab
+
+permissions:
+  contents: write
+
+jobs:
+  update-stats:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repo
+        uses: actions/checkout@v4
+
+      - name: Fetch account stats and latest post
+        env:
+          IG_ACCESS_TOKEN: ${{ secrets.IG_ACCESS_TOKEN }}
+          IG_USER_ID: ${{ secrets.IG_USER_ID }}
+        run: |
+          curl -s "https://graph.instagram.com/v21.0/${IG_USER_ID}?fields=followers_count,follows_count,media_count&access_token=${IG_ACCESS_TOKEN}" -o account.json
+
+          python3 - <<'PY'
+          import json
+          import os
+          import urllib.request
+          from datetime import datetime, timezone
+
+          with open('account.json') as f:
+              account = json.load(f)
+
+          def fetch_json(url):
+              with urllib.request.urlopen(url, timeout=30) as resp:
+                  return json.loads(resp.read().decode())
+
+          ig_user_id = os.environ['IG_USER_ID']
+          ig_token = os.environ['IG_ACCESS_TOKEN']
+
+          total_likes = 0
+          posts_counted = 0
+          recent_posts = []
+
+          try:
+              url = (
+                  f"https://graph.instagram.com/v21.0/{ig_user_id}/media"
+                  "?fields=id,caption,media_type,media_url,thumbnail_url,permalink,timestamp,like_count"
+                  f"&limit=25&access_token={ig_token}"
+              )
+              while url:
+                  page = fetch_json(url)
+                  for item in page.get('data', []):
+                      total_likes += item.get('like_count') or 0
+                      posts_counted += 1
+                      # Just his 4 most recent posts, whatever mix of photos
+                      # and videos that happens to be (posts come back
+                      # newest-first).
+                      if len(recent_posts) < 4:
+                          recent_posts.append(item)
+                  url = page.get('paging', {}).get('next')
+
+              # Instagram's batch/list endpoint sometimes silently drops
+              # media_url for individual video posts even though it's
+              # genuinely a VIDEO. When that happens, ask for that one post
+              # directly by ID — the single-item lookup often returns the
+              # field even when the list call didn't.
+              for post in recent_posts:
+                  if post.get('media_type') == 'VIDEO' and not post.get('media_url'):
+                      try:
+                          detail = fetch_json(
+                              f"https://graph.instagram.com/v21.0/{post['id']}"
+                              f"?fields=media_url&access_token={ig_token}"
+                          )
+                          if detail.get('media_url'):
+                              post['media_url'] = detail['media_url']
+                      except Exception as e:
+                          print(f"Warning: couldn't backfill media_url for {post['id']} ({e})")
+          except Exception as e:
+              # If Instagram rate-limits or errors out partway through, don't
+              # let that take down the whole stats update. Fall back to
+              # whatever we'd already built up this run, or the previous
+              # values already on disk if we got nothing at all.
+              print(f"Warning: stopped paging through posts early ({e})")
+              if posts_counted == 0:
+                  try:
+                      with open('stats.json') as f:
+                          old = json.load(f)
+                          total_likes = old.get('total_likes', 0)
+                          recent_posts = old.get('recent_posts', [])
+                  except Exception:
+                      total_likes = 0
+                      recent_posts = []
+
+          output = {
+              **account,
+              'recent_posts': recent_posts,
+              'total_likes': total_likes,
+              'updated_at': datetime.now(timezone.utc).isoformat(),
+          }
+
+          with open('stats.json', 'w') as f:
+              json.dump(output, f, indent=2)
+          PY
+
+          cat stats.json
+
+      - name: Commit and push if changed
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add stats.json
+          git diff --quiet && git diff --staged --quiet || git commit -m "Update Instagram stats"
+          # If main moved since we checked out (e.g. someone pushed a manual
+          # change while this was running), rebase our commit on top instead
+          # of failing outright.
+          git pull --rebase origin main
+          git push

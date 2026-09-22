@@ -1,0 +1,923 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#e9e2d5">
+<title>John Velasco | Cinematic Filmmaker</title>
+<style>
+  :root{
+    --bg:#e9e2d5;
+    --page-bg: radial-gradient(circle at 50% -10%, rgba(57,120,198,.20), transparent 34%), linear-gradient(180deg,#eee7da 0%,#e5e0d7 52%,#dce4eb 100%);
+    --panel:#f7f2e8;
+    --panel2:#d9e2ec;
+    --text:#151a20;
+    --muted:#5f6872;
+    --blue:#3978c6;
+    --blue2:#24558f;
+    --cream:#fff8e8;
+    --grey:#89939e;
+    --border:rgba(21,26,32,.13);
+    --panel-grad:linear-gradient(135deg,#f8f2e7 0%,#eee8dc 52%,#dce5ee 100%);
+    --card-grad:linear-gradient(145deg,#f8f3e9,#e1e9f0);
+    --work-fallback-bg:linear-gradient(145deg,#f8f2e7,#dce5ee);
+    --shadow:0 25px 70px rgba(38,47,56,.14);
+    --header-bg:rgba(247,242,232,.84);
+    --footer-bg:#cbd2d8;
+    --footer-text:#4e5963;
+    --hero-glow:radial-gradient(circle at 50% 42%,rgba(255,248,232,.72),transparent 48%);
+    --gradient-text:linear-gradient(120deg,#24558f 0%,#3978c6 38%,#8a6f3f 72%,#4d5964 100%);
+    --skeleton-base:rgba(21,26,32,.08);
+    --skeleton-shine:rgba(21,26,32,.16);
+  }
+  html[data-theme="dark"]{
+    --bg:#07090d;
+    --page-bg: radial-gradient(circle at 50% -10%, rgba(76,139,214,.20), transparent 34%), #07090d;
+    --panel:#171b21;
+    --panel2:#252b33;
+    --text:#f7f4ea;
+    --muted:#aeb4bd;
+    --blue:#7fb8ff;
+    --blue2:#4f9bf0;
+    --cream:#fff4dc;
+    --grey:#8b949e;
+    --border:rgba(244,234,215,.13);
+    --panel-grad:linear-gradient(135deg,#11151b 0%,#171c23 55%,#202833 100%);
+    --card-grad:linear-gradient(145deg,rgba(244,234,215,.06),rgba(127,184,255,.045));
+    --work-fallback-bg:var(--panel);
+    --shadow:0 30px 100px rgba(0,0,0,.4);
+    --header-bg:rgba(7,9,13,.78);
+    --footer-bg:#0b0e13;
+    --footer-text:var(--muted);
+    --hero-glow:radial-gradient(circle at 50% 42%,rgba(127,184,255,.10),transparent 48%);
+    --gradient-text:linear-gradient(120deg,var(--cream) 15%,#ffffff 45%,var(--blue) 90%);
+    --skeleton-base:rgba(244,234,215,.06);
+    --skeleton-shine:rgba(244,234,215,.14);
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0;
+    background:var(--page-bg);
+    color:var(--text);
+    font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+    line-height:1.6;
+    transition:background .3s ease,color .3s ease;
+  }
+  a{color:inherit;text-decoration:none}
+  .wrap{width:min(1120px,92%);margin:auto}
+  header{
+    position:sticky;top:0;z-index:20;
+    backdrop-filter:blur(18px);
+    background:var(--header-bg);
+    border-bottom:1px solid var(--border);
+    transition:background .3s ease,border-color .3s ease;
+  }
+  nav{
+    min-height:72px;display:flex;align-items:center;justify-content:space-between;
+    gap:20px;
+  }
+  .brand{color:var(--text);font-weight:900;letter-spacing:-.04em;font-size:1.15rem}
+  .brand span{color:var(--blue)}
+  .nav-right{display:flex;align-items:center;gap:24px}
+  .links{display:flex;gap:24px;color:var(--muted);font-size:.94rem}
+  .links a:hover{color:var(--blue2)}
+  .theme-toggle{
+    display:inline-flex;align-items:center;justify-content:center;
+    width:38px;height:38px;border-radius:50%;
+    border:1px solid var(--border);background:var(--panel);
+    cursor:pointer;color:var(--text);flex:none;
+    transition:.2s transform ease,.2s background ease;
+  }
+  .theme-toggle:hover{transform:translateY(-2px)}
+  .theme-toggle svg{width:18px;height:18px}
+  .theme-toggle .icon-moon{display:none}
+  html[data-theme="dark"] .theme-toggle .icon-sun{display:none}
+  html[data-theme="dark"] .theme-toggle .icon-moon{display:block}
+  .hero{position:relative;min-height:88vh;display:grid;place-items:center;text-align:center;padding:90px 0 70px;background:var(--hero-glow)}
+  .eyebrow{
+    display:inline-flex;align-items:center;gap:9px;
+    padding:8px 13px;border:1px solid var(--border);border-radius:999px;
+    background:var(--panel);color:var(--text);font-size:.82rem;font-weight:700;
+  }
+  .dot{width:7px;height:7px;border-radius:50%;background:var(--blue);box-shadow:0 0 18px var(--blue)}
+  h1{
+    margin:24px 0 16px;
+    font-size:clamp(3.1rem,9vw,7rem);
+    line-height:.95;letter-spacing:-.07em;
+    color:var(--text);
+  }
+  .gradient{
+    background:var(--gradient-text);
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+  }
+  .hero p{max-width:700px;margin:0 auto;color:var(--muted);font-size:clamp(1rem,2vw,1.2rem)}
+  .buttons{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin-top:30px}
+  .btn{
+    padding:13px 21px;border-radius:999px;font-weight:800;border:1px solid var(--border);
+    transition:.2s transform,.2s background;
+    display:inline-block;cursor:pointer;font-size:1rem;font-family:inherit;
+  }
+  .btn:hover{transform:translateY(-2px)}
+  .primary{background:linear-gradient(135deg,var(--blue),var(--blue2));color:#fff;border:0}
+  html[data-theme="dark"] .primary{color:#07101b}
+  .secondary{background:var(--panel);color:var(--text)}
+  section{padding:78px 0}
+  .section-title{color:var(--text);font-size:clamp(2rem,5vw,3.5rem);letter-spacing:-.055em;margin:0 0 12px}
+  .section-sub{color:var(--muted);max-width:680px;margin:0 0 34px}
+  .about,.contact{
+    background:var(--panel-grad);
+    border:1px solid var(--border);border-radius:28px;padding:clamp(24px,5vw,52px);
+    box-shadow:var(--shadow);
+  }
+  .about::before,.contact::before{content:"";display:block;width:90px;height:2px;background:linear-gradient(90deg,var(--blue),var(--cream));margin-bottom:24px;opacity:.9}
+  .about h3,.contact h2{color:var(--text)}
+  .about p,.contact p{color:var(--muted)}
+  .name{font-size:clamp(1.8rem,4vw,2.7rem);font-weight:900;letter-spacing:-.045em;margin:0;color:var(--text)}
+  .handle{color:var(--blue2);font-weight:750;margin:2px 0 26px}
+  .skills{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:30px}
+  .skill{
+    background:var(--panel);border:1px solid var(--border);border-radius:18px;
+    padding:18px;font-weight:800;color:var(--text);
+  }
+  .work-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+  .card{
+    min-height:220px;padding:26px;border:1px solid var(--border);border-radius:24px;
+    background:var(--work-fallback-bg);display:flex;flex-direction:column;justify-content:flex-end;
+    overflow:hidden;position:relative;
+    background-size:cover;background-position:center;
+    box-shadow:var(--shadow);
+    cursor:pointer;
+  }
+  .card:before{
+    content:"";position:absolute;inset:0;
+    background:linear-gradient(180deg,rgba(0,0,0,.05) 0%,rgba(0,0,0,.68) 100%);
+    opacity:.85;
+  }
+  .card>*{position:relative}
+  .card h3{color:#fff;margin:0 0 5px;font-size:1.45rem;text-shadow:0 2px 10px rgba(0,0,0,.5)}
+  .card p{margin:0;color:#e7e7e7;text-shadow:0 1px 6px rgba(0,0,0,.5)}
+  footer{padding:35px 0 45px;color:var(--footer-text);text-align:center;font-size:.9rem;background:var(--footer-bg);border-top:1px solid var(--border);transition:background .3s ease}
+  @media(max-width:760px){
+    .links{display:none}
+    .hero{position:relative;min-height:78vh;padding-top:65px}
+    section{padding:58px 0}
+    .skills{grid-template-columns:repeat(2,1fr)}
+    .work-grid{grid-template-columns:1fr}
+  }
+  @media(max-width:430px){
+    .skills{grid-template-columns:1fr}
+    .about{border-radius:22px}
+    .contact{border-radius:22px}
+  }
+
+  .section-intro{max-width:700px;color:var(--muted);margin:-10px 0 34px}
+  .section-kicker{font-size:.78rem;font-weight:900;letter-spacing:.14em;color:var(--muted);margin-bottom:8px}
+  .platform-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}
+  .platform{background:var(--card-grad);border:1px solid var(--border);border-radius:24px;padding:24px;box-shadow:var(--shadow);display:flex;flex-direction:column;align-items:flex-start;gap:20px}
+  .platform-head{display:flex;justify-content:space-between;align-items:flex-start;width:100%}
+  .platform-label{display:block;font-size:.78rem;font-weight:900;letter-spacing:.14em;color:var(--muted)}
+  .platform-handle{display:block;color:var(--muted);font-size:.9rem;margin-top:3px}
+  .platform-dot{color:var(--blue);font-size:1.5rem;line-height:1}
+  @media (max-width:760px){
+    .platform-grid{grid-template-columns:1fr}
+    .platform{padding:18px;border-radius:20px}
+  }
+
+  .reveal{opacity:0;transition:opacity .7s ease, transform .7s ease;will-change:transform,opacity}
+  .reveal-left{transform:translateX(-60px)}
+  .reveal-right{transform:translateX(60px)}
+  .reveal.is-visible{opacity:1;transform:translateX(0)}
+  @media (prefers-reduced-motion: reduce){
+    .reveal{transition:none;opacity:1;transform:none}
+  }
+
+  .stat-number{font-size:2.2rem;font-weight:900;color:var(--blue2)}
+  .stat-platform{align-items:center;text-align:center}
+
+  .recent-posts-heading{
+    margin:34px 0 16px;
+    font-size:.78rem;
+    font-weight:900;
+    letter-spacing:.14em;
+    color:var(--muted);
+  }
+  .recent-posts-grid{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:18px;
+  }
+  .post-card{
+    display:block;
+    background:var(--card-grad);
+    border:2px solid var(--border);
+    border-radius:20px;
+    padding:14px;
+    box-shadow:var(--shadow);
+    transition:.45s transform ease,.45s box-shadow ease,.45s border-color ease;
+  }
+  .post-card:hover,
+  .post-card.is-active{
+    transform:translateY(-5px) scale(1.06);
+    box-shadow:0 0 0 4px rgba(57,120,198,.35),0 30px 90px rgba(38,47,56,.3);
+    border-color:var(--blue);
+    z-index:2;
+  }
+  .post-card-media{
+    position:relative;
+    width:100%;
+    aspect-ratio:1/1;
+    border-radius:14px;
+    overflow:hidden;
+    background:var(--panel2);
+  }
+  .post-card-image,
+  .post-card-video{
+    position:absolute;
+    inset:0;
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    display:block;
+  }
+  .post-card-image{
+    transform:scale(1);
+    transition:transform 8s cubic-bezier(.25,.1,.25,1);
+  }
+  .post-card.is-active .post-card-image{
+    transform:scale(1.14);
+  }
+  .post-card-video{
+    opacity:0;
+    transition:opacity .4s ease;
+    pointer-events:none;
+  }
+  .post-card:hover .post-card-video,
+  .post-card.is-active .post-card-video{
+    opacity:1;
+  }
+  .post-card-badge{
+    position:absolute;
+    left:10px;
+    bottom:10px;
+    display:flex;
+    align-items:center;
+    gap:6px;
+    padding:7px 13px;
+    border-radius:999px;
+    background:rgba(8,10,13,.72);
+    color:#fff;
+    font-size:.8rem;
+    font-weight:800;
+    letter-spacing:.02em;
+    transition:.3s background ease,.3s transform ease;
+  }
+  .post-card-badge svg{width:12px;height:12px;flex:none}
+  .post-card:hover .post-card-badge,
+  .post-card.is-active .post-card-badge{
+    background:var(--blue2);
+    transform:scale(1.05);
+  }
+  .post-card-caption{
+    color:var(--muted);
+    font-size:.85rem;
+    margin:12px 0 0;
+    display:-webkit-box;
+    -webkit-line-clamp:3;
+    -webkit-box-orient:vertical;
+    overflow:hidden;
+  }
+  @media (max-width:900px){
+    .recent-posts-grid{grid-template-columns:repeat(2,1fr)}
+  }
+  @media (max-width:480px){
+    .recent-posts-grid{grid-template-columns:1fr}
+  }
+
+  /* --- Loading skeletons --- */
+  @keyframes shimmer{
+    0%{background-position:-200% 0}
+    100%{background-position:200% 0}
+  }
+  .skeleton{
+    background:linear-gradient(90deg, var(--skeleton-base) 25%, var(--skeleton-shine) 37%, var(--skeleton-base) 63%);
+    background-size:200% 100%;
+    animation:shimmer 1.4s ease-in-out infinite;
+    border-radius:8px;
+    color:transparent !important;
+    display:inline-block;
+  }
+  .stat-number.skeleton{width:64px;height:2.2rem;vertical-align:middle}
+  .post-card-skeleton .post-card-media{background:var(--skeleton-base)}
+  .post-card-skeleton .post-card-media,
+  .post-card-skeleton .post-card-caption-line{
+    background:linear-gradient(90deg, var(--skeleton-base) 25%, var(--skeleton-shine) 37%, var(--skeleton-base) 63%);
+    background-size:200% 100%;
+    animation:shimmer 1.4s ease-in-out infinite;
+  }
+  .post-card-caption-line{height:12px;border-radius:6px;margin-top:10px}
+  .post-card-caption-line:first-child{margin-top:14px}
+  .post-card-caption-line.short{width:60%}
+
+  /* --- Lightbox --- */
+  .lightbox-overlay{
+    position:fixed;inset:0;z-index:100;
+    background:rgba(5,6,9,.92);
+    display:none;
+    align-items:center;justify-content:center;
+    padding:5vh 5vw;
+    cursor:zoom-out;
+  }
+  .lightbox-overlay.is-open{display:flex}
+  .lightbox-overlay img{
+    max-width:100%;max-height:90vh;border-radius:16px;
+    box-shadow:0 40px 120px rgba(0,0,0,.5);
+    cursor:default;
+  }
+  .lightbox-close{
+    position:absolute;top:22px;right:24px;
+    width:44px;height:44px;border-radius:50%;
+    background:rgba(255,255,255,.12);color:#fff;
+    display:flex;align-items:center;justify-content:center;
+    font-size:1.4rem;cursor:pointer;border:1px solid rgba(255,255,255,.25);
+  }
+  .lightbox-caption{
+    position:absolute;bottom:28px;left:0;right:0;text-align:center;
+    color:#f2f2f2;font-weight:700;letter-spacing:.02em;
+  }
+
+  /* --- Testimonials --- */
+  .testimonial-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+  .testimonial-card{
+    background:var(--card-grad);border:1px solid var(--border);border-radius:22px;
+    padding:26px;box-shadow:var(--shadow);display:flex;flex-direction:column;gap:16px;
+  }
+  .testimonial-stars{color:#e8b93a;letter-spacing:2px;font-size:1rem}
+  .testimonial-quote{color:var(--text);font-size:1rem;line-height:1.55;flex:1}
+  .testimonial-author{display:flex;flex-direction:column}
+  .testimonial-name{font-weight:800;color:var(--text)}
+  .testimonial-role{color:var(--muted);font-size:.85rem}
+  @media (max-width:900px){ .testimonial-grid{grid-template-columns:1fr} }
+
+  /* --- Contact form --- */
+  .contact-form{
+    display:grid;gap:14px;max-width:520px;margin:0 auto;text-align:left;
+  }
+  .contact-form label{font-size:.8rem;font-weight:800;letter-spacing:.06em;color:var(--muted);text-transform:uppercase}
+  .contact-form input,
+  .contact-form select,
+  .contact-form textarea{
+    width:100%;padding:13px 15px;border-radius:14px;border:1px solid var(--border);
+    background:var(--panel);color:var(--text);font-family:inherit;font-size:1rem;
+  }
+  .contact-form textarea{resize:vertical;min-height:110px}
+  .contact-form .field{display:grid;gap:6px}
+  .contact-form button{margin-top:6px}
+  .form-note{color:var(--muted);font-size:.85rem;margin-top:14px}
+  .form-note a{color:var(--blue2);font-weight:700}
+  .form-success{
+    display:none;background:var(--panel);border:1px solid var(--border);border-radius:16px;
+    padding:18px;color:var(--text);font-weight:700;max-width:520px;margin:0 auto;
+  }
+  .form-success.is-visible{display:block}
+  .contact-form.is-hidden{display:none}
+
+/* Cinematiclife.17 upgrades */
+.share-site-btn{
+  position:fixed;right:18px;bottom:18px;z-index:9999;
+  border:1px solid var(--border,rgba(0,0,0,.18));
+  background:var(--panel,#f7f2e8);color:var(--text,#151a20);
+  border-radius:999px;padding:11px 16px;font:inherit;font-weight:800;
+  cursor:pointer;box-shadow:0 10px 28px rgba(0,0,0,.14);
+}
+.share-site-btn:active{transform:scale(.97)}
+.hero-rotating-quote{
+  margin-top:18px;min-height:1.5em;font-style:italic;opacity:.75;
+  transition:opacity .25s ease;
+}
+.counting-number{font-variant-numeric:tabular-nums}
+@media(prefers-reduced-motion:reduce){
+  .share-site-btn,.hero-rotating-quote{transition:none!important}
+}
+
+</style>
+</head>
+<body>
+
+<div class="lightbox-overlay" id="lightbox">
+  <div class="lightbox-close" id="lightbox-close">&times;</div>
+  <img id="lightbox-img" src="" alt="">
+  <div class="lightbox-caption" id="lightbox-caption"></div>
+</div>
+
+<header>
+  <div class="wrap">
+    <nav>
+      <a class="brand" href="#top">JOHN<span>.</span>VELASCO</a>
+      <div class="nav-right">
+        <div class="links">
+          <a href="#about">About Me</a>
+          <a href="#stats">Follow</a>
+          <a href="#work">What I Shoot</a>
+          <a href="#contact">Contact</a>
+        </div>
+        <button class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode" type="button">
+          <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+          <svg class="icon-moon" viewBox="0 0 24 24" fill="currentColor"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
+        </button>
+      </div>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+  <section class="hero">
+    <div class="wrap">
+      <div class="eyebrow"><span class="dot"></span> Cinematography driven filmmaker</div>
+      <h1>Make every moment<br><span class="gradient">cinematic.</span></h1>
+      <p>Visual storytelling built around intentional composition, movement, lighting and editing.</p>
+      <div class="buttons">
+        <a class="btn primary" href="#about">About Me</a>
+        <a class="btn secondary" href="#work">Explore My Work</a>
+      </div>
+    </div>
+  <div class="hero-rotating-quote" id="hero-rotating-quote">“Every moment has a frame worth finding.”</div>
+</section>
+
+  <section id="about">
+    <div class="wrap">
+      <h2 class="section-title">About Me</h2>
+      <p class="section-sub">A little about the filmmaker behind the camera.</p>
+
+      <div class="about">
+        <h3 class="name">John Velasco</h3>
+        <div class="handle">@cinematiclife.17</div>
+
+        <p>Hi there! I’m a cinematography driven filmmaker who enjoys shooting life's daily moments with a cinematic flair. I produce visually driven content that focuses around intentional composition, movement, lighting and editing.</p>
+
+        <p>Some of my favorite things to shoot are cinematic lifestyle, sports /action, events, environmental art and filmmaking BTS. I love trying new things and shooting in unique ways that make each moment feel larger than life and cinematic.</p>
+
+        <p>My goal is to push creativity and tell stories through my work that are captivating and leave a lasting impression.</p>
+
+        <div class="skills">
+          <div class="skill">🎥 Cinematography</div>
+          <div class="skill">🎬 Filmmaking</div>
+          <div class="skill">✂️ Editing</div>
+          <div class="skill">✨ Visual Storytelling</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="stats" class="section">
+    <div class="wrap">
+      <div class="section-kicker">FOLLOW ALONG</div>
+      <h2 class="section-title">Find Me Online</h2>
+      <p class="section-intro">Follow John's cinematic work on Instagram.</p>
+
+      <div class="platform-grid">
+        <div class="platform">
+          <div class="platform-head">
+            <div>
+              <span class="platform-label">INSTAGRAM</span>
+              <span class="platform-handle">@cinematiclife.17</span>
+            </div>
+            <span class="platform-dot">●</span>
+          </div>
+          <a class="btn primary" href="https://www.instagram.com/cinematiclife.17/" target="_blank" rel="noopener">Follow on Instagram</a>
+        </div>
+      </div>
+
+      <div class="platform-grid" style="margin-top:20px">
+        <div class="platform stat-platform">
+          <span class="platform-label">FOLLOWERS</span>
+          <span id="followers-count" class="stat-number skeleton">--</span>
+        </div>
+        <div class="platform stat-platform">
+          <span class="platform-label">FOLLOWING</span>
+          <span id="following-count" class="stat-number skeleton">--</span>
+        </div>
+        <div class="platform stat-platform">
+          <span class="platform-label">POSTS</span>
+          <span id="posts-count" class="stat-number skeleton">--</span>
+        </div>
+        <div class="platform stat-platform">
+          <span class="platform-label">TOTAL LIKES</span>
+          <span id="likes-count" class="stat-number skeleton">--</span>
+        </div>
+      </div>
+
+      <!-- Recent Posts grid: auto-fills from stats.json -->
+      <div class="recent-posts-heading" id="recent-posts-heading">RECENT POSTS</div>
+      <div class="recent-posts-grid" id="recent-posts-grid"></div>
+    </div>
+  </section>
+
+  <section id="work">
+    <div class="wrap">
+      <h2 class="section-title">What I Shoot</h2>
+      <p class="section-sub">Visual stories across different environments, subjects and moments. Tap any photo for a closer look.</p>
+
+      <div class="work-grid" id="work-grid">
+        <article class="card reveal reveal-left" data-full="cinematic-lifestyle.jpg" style="background-image:url('cinematic-lifestyle.jpg')"><h3>Cinematic Lifestyle</h3><p>Everyday moments with intentional visual direction.</p></article>
+        <article class="card reveal reveal-right" data-full="sports-action.jpg" style="background-image:url('sports-action.jpg')"><h3>Sports / Action</h3><p>Movement, energy and moments that hit at full speed.</p></article>
+        <article class="card reveal reveal-left" data-full="events.jpg" style="background-image:url('events.jpg')"><h3>Events</h3><p>Capturing atmosphere, people and the moments worth remembering.</p></article>
+        <article class="card reveal reveal-right" data-full="environmental-art.jpg" style="background-image:url('environmental-art.jpg')"><h3>Environmental Art</h3><p>Creative visuals inspired by unique spaces and surroundings.</p></article>
+        <article class="card reveal reveal-left" data-full="filmmaking-bts.jpg" style="background-image:url('filmmaking-bts.jpg')"><h3>Filmmaking BTS</h3><p>A look behind the camera at how the story comes together.</p></article>
+        <article class="card reveal reveal-right" data-full="creative-experiments.jpg" style="background-image:url('creative-experiments.jpg')"><h3>Creative Experiments</h3><p>Trying new techniques and finding unexpected ways to shoot.</p></article>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact">
+    <div class="wrap">
+      <div class="contact">
+        <h2 class="section-title">Let’s Create Something</h2>
+        <p class="section-sub" style="margin-left:auto;margin-right:auto">Have an idea, project or moment you want captured with a cinematic flair? Fill this out and it'll land straight in the inbox.</p>
+
+        <form class="contact-form" id="contact-form" action="https://formspree.io/f/xzezpgkr" method="POST">
+          <div class="field">
+            <label for="cf-name">Name</label>
+            <input id="cf-name" name="name" type="text" required>
+          </div>
+          <div class="field">
+            <label for="cf-email">Email</label>
+            <input id="cf-email" name="email" type="email" required>
+          </div>
+          <div class="field">
+            <label for="cf-type">Project type</label>
+            <select id="cf-type" name="project_type">
+              <option>Event</option>
+              <option>Brand / commercial</option>
+              <option>Personal / lifestyle</option>
+              <option>Something else</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="cf-message">Message</label>
+            <textarea id="cf-message" name="message" required></textarea>
+          </div>
+          <button class="btn primary" type="submit">Send Message</button>
+        </form>
+
+        <div class="form-success" id="form-success">Thanks! Your message is on its way — John will get back to you soon.</div>
+
+        <p class="form-note">
+          Form not working yet? <a href="https://formspree.io" target="_blank" rel="noopener">Sign up free at formspree.io</a>, grab your form ID, and drop it into the form's <code>action</code> URL in the code. Or just email <a href="mailto:johnkevinvelasco123@gmail.com">johnkevinvelasco123@gmail.com</a> directly.
+        </p>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  © 2026 John Velasco · @cinematiclife.17
+</footer>
+
+<script>
+  // --- Theme toggle ---
+  (function(){
+    var root = document.documentElement;
+    var toggle = document.getElementById('theme-toggle');
+    var stored = null;
+    try { stored = localStorage.getItem('site-theme'); } catch(e){}
+    if (stored === 'dark' || stored === 'light') {
+      root.setAttribute('data-theme', stored);
+    }
+    toggle.addEventListener('click', function(){
+      var current = root.getAttribute('data-theme') === 'dark' ? 'dark' : 'light';
+      var next = current === 'dark' ? 'light' : 'dark';
+      root.setAttribute('data-theme', next);
+      try { localStorage.setItem('site-theme', next); } catch(e){}
+    });
+  })();
+</script>
+
+<script>
+  // --- Scroll reveal for "What I Shoot" cards ---
+  (function(){
+    var items = document.querySelectorAll('.reveal');
+    if(!('IntersectionObserver' in window)){
+      items.forEach(function(el){ el.classList.add('is-visible'); });
+      return;
+    }
+    var observer = new IntersectionObserver(function(entries){
+      entries.forEach(function(entry){
+        if(entry.isIntersecting){
+          entry.target.classList.add('is-visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.2 });
+    items.forEach(function(el){ observer.observe(el); });
+  })();
+</script>
+
+<script>
+  // --- Lightbox for "What I Shoot" cards ---
+  (function(){
+    var overlay = document.getElementById('lightbox');
+    var img = document.getElementById('lightbox-img');
+    var caption = document.getElementById('lightbox-caption');
+    var closeBtn = document.getElementById('lightbox-close');
+    var cards = document.querySelectorAll('#work-grid .card');
+
+    function open(src, label){
+      img.src = src;
+      caption.textContent = label || '';
+      overlay.classList.add('is-open');
+      document.body.style.overflow = 'hidden';
+    }
+    function close(){
+      overlay.classList.remove('is-open');
+      document.body.style.overflow = '';
+    }
+
+    cards.forEach(function(card){
+      card.addEventListener('click', function(){
+        var full = card.getAttribute('data-full');
+        var label = card.querySelector('h3') ? card.querySelector('h3').textContent : '';
+        if (full) open(full, label);
+      });
+    });
+    closeBtn.addEventListener('click', close);
+    overlay.addEventListener('click', function(e){
+      if (e.target === overlay) close();
+    });
+    document.addEventListener('keydown', function(e){
+      if (e.key === 'Escape') close();
+    });
+  })();
+</script>
+
+<script>
+  // --- Contact form (Formspree, with inline success message) ---
+  (function(){
+    var form = document.getElementById('contact-form');
+    var success = document.getElementById('form-success');
+    form.addEventListener('submit', function(e){
+      var action = form.getAttribute('action') || '';
+      if (action.indexOf('REPLACE_WITH_YOUR_FORM_ID') !== -1) {
+        // Form hasn't been connected to Formspree yet - let the normal
+        // mailto fallback link in the note below do the job instead of
+        // silently failing.
+        return;
+      }
+      e.preventDefault();
+      fetch(action, {
+        method: 'POST',
+        body: new FormData(form),
+        headers: { 'Accept': 'application/json' }
+      }).then(function(response){
+        if (response.ok) {
+          form.classList.add('is-hidden');
+          success.classList.add('is-visible');
+        } else {
+          alert('Something went wrong sending that - try again, or use the email link below.');
+        }
+      }).catch(function(){
+        alert('Something went wrong sending that - try again, or use the email link below.');
+      });
+    });
+  })();
+</script>
+
+<script>
+  // --- Live stats + recent posts, with loading skeletons ---
+  (function(){
+    var grid = document.getElementById('recent-posts-grid');
+    var heading = document.getElementById('recent-posts-heading');
+
+    // Show 4 skeleton placeholder cards immediately, replaced once real
+    // data arrives (or removed if the fetch fails).
+    for (var s = 0; s < 4; s++) {
+      var skel = document.createElement('div');
+      skel.className = 'post-card post-card-skeleton';
+      skel.innerHTML =
+        '<div class="post-card-media"></div>' +
+        '<div class="post-card-caption-line"></div>' +
+        '<div class="post-card-caption-line short"></div>';
+      grid.appendChild(skel);
+    }
+
+    fetch('stats.json')
+      .then(response => response.json())
+      .then(data => {
+        setStat('followers-count', data.followers_count);
+        setStat('following-count', data.follows_count);
+        setStat('posts-count', data.media_count);
+        setStat('likes-count', typeof data.total_likes === 'number' ? data.total_likes.toLocaleString() : null);
+
+        function setStat(id, value){
+          var el = document.getElementById(id);
+          el.textContent = (value === null || value === undefined) ? '—' : value;
+          el.classList.remove('skeleton');
+        }
+
+        // Supports the new multi-post "recent_posts" array, and falls back to
+        // the old single "latest_post" field so nothing breaks mid-transition.
+        var posts = data.recent_posts || (data.latest_post ? [data.latest_post] : []);
+
+        // Clear the skeleton placeholders now that we have a real answer.
+        grid.innerHTML = '';
+
+        if (posts.length && grid) {
+          posts.slice(0, 4).forEach(function(post){
+            if (!post || (!post.media_url && !post.thumbnail_url)) return;
+
+            var isVideo = post.media_type === 'VIDEO' && !!post.media_url;
+            var posterSrc = post.thumbnail_url || post.media_url;
+
+            var card = document.createElement('a');
+            card.className = 'post-card';
+            card.href = post.permalink || '#';
+            card.target = '_blank';
+            card.rel = 'noopener';
+
+            var media = document.createElement('div');
+            media.className = 'post-card-media';
+
+            var img = document.createElement('img');
+            img.className = 'post-card-image';
+            img.src = posterSrc;
+            img.alt = 'Instagram post';
+            media.appendChild(img);
+
+            var video = null;
+            var badge = null;
+            if (isVideo) {
+              video = document.createElement('video');
+              video.className = 'post-card-video';
+              video.muted = true;
+              video.loop = true;
+              video.playsInline = true;
+              video.preload = 'none';
+              video.setAttribute('poster', posterSrc);
+              video.dataset.src = post.media_url;
+              media.appendChild(video);
+
+              badge = document.createElement('span');
+              badge.className = 'post-card-badge';
+              badge.innerHTML = '<svg viewBox="0 0 24 24" fill="white"><path d="M8 5v14l11-7z"/></svg><span>Video</span>';
+              media.appendChild(badge);
+            } else {
+              badge = document.createElement('span');
+              badge.className = 'post-card-badge';
+              badge.innerHTML = '<svg viewBox="0 0 24 24" fill="white"><path d="M4 5h16v14H4V5zm2 2v10h12V7H6zm3 2l2.5 3.2L13 9.6 17 15H7l2-4z"/></svg><span>Photo</span>';
+              media.appendChild(badge);
+            }
+
+            var caption = document.createElement('p');
+            caption.className = 'post-card-caption';
+            caption.textContent = post.caption || '';
+
+            card.appendChild(media);
+            card.appendChild(caption);
+            grid.appendChild(card);
+
+            var startPreview = null;
+            var stopPreview = null;
+            if (video) {
+              var videoFailed = false;
+              video.addEventListener('playing', function(){
+                if (badge) { badge.innerHTML = '<span>▶ Playing</span>'; }
+              });
+              video.addEventListener('error', function(){
+                videoFailed = true;
+                video.style.display = 'none';
+                if (badge) { badge.innerHTML = '<span>🔍 Zooming in</span>'; }
+              });
+
+              startPreview = function(){
+                if (videoFailed) {
+                  if (badge) { badge.innerHTML = '<span>🔍 Zooming in</span>'; }
+                  return;
+                }
+                if (!video.src) { video.src = video.dataset.src; }
+                var playPromise = video.play();
+                if (playPromise && playPromise.catch) {
+                  playPromise.catch(function(){
+                    videoFailed = true;
+                    if (badge) { badge.innerHTML = '<span>🔍 Zooming in</span>'; }
+                  });
+                }
+              };
+              stopPreview = function(){
+                video.pause();
+                video.currentTime = 0;
+                if (badge && !videoFailed) {
+                  badge.innerHTML = '<svg viewBox="0 0 24 24" fill="white"><path d="M8 5v14l11-7z"/></svg><span>Video</span>';
+                }
+              };
+            } else {
+              startPreview = function(){
+                if (badge) { badge.innerHTML = '<span>🔍 Zooming in</span>'; }
+              };
+              stopPreview = function(){
+                if (badge) { badge.innerHTML = '<svg viewBox="0 0 24 24" fill="white"><path d="M4 5h16v14H4V5zm2 2v10h12V7H6zm3 2l2.5 3.2L13 9.6 17 15H7l2-4z"/></svg><span>Photo</span>'; }
+              };
+            }
+
+            card.addEventListener('mouseenter', startPreview);
+            card.addEventListener('mouseleave', stopPreview);
+
+            if ('IntersectionObserver' in window) {
+              var cardObserver = new IntersectionObserver(function(entries){
+                entries.forEach(function(entry){
+                  if (entry.isIntersecting) {
+                    card.classList.add('is-active');
+                    startPreview();
+                  } else {
+                    card.classList.remove('is-active');
+                    stopPreview();
+                  }
+                });
+              }, { threshold: 0.1, rootMargin: '150px 0px 150px 0px' });
+              cardObserver.observe(card);
+            }
+          });
+
+          if (grid.children.length) {
+            heading.style.display = 'block';
+          } else {
+            heading.style.display = 'none';
+          }
+        } else {
+          heading.style.display = 'none';
+        }
+      })
+      .catch(error => {
+        console.error('Could not load Instagram stats:', error);
+        grid.innerHTML = '';
+        heading.style.display = 'none';
+        ['followers-count','following-count','posts-count','likes-count'].forEach(function(id){
+          var el = document.getElementById(id);
+          el.textContent = '—';
+          el.classList.remove('skeleton');
+        });
+      });
+  })();
+</script>
+
+
+<button class="share-site-btn" id="share-site-btn" type="button">↗ Share this site</button>
+
+<script>
+(function(){
+  const quotes=[
+    "“Every moment has a frame worth finding.”",
+    "“Light turns ordinary moments into stories.”",
+    "“Shoot with intention. Edit with feeling.”",
+    "“The little details make the scene.”"
+  ];
+  const quote=document.getElementById("hero-rotating-quote");
+  if(quote && !window.matchMedia("(prefers-reduced-motion: reduce)").matches){
+    let i=0;
+    setInterval(function(){
+      i=(i+1)%quotes.length;
+      quote.style.opacity="0";
+      setTimeout(function(){
+        quote.textContent=quotes[i];
+        quote.style.opacity="1";
+      },200);
+    },4500);
+  }
+
+  const share=document.getElementById("share-site-btn");
+  if(share){
+    share.addEventListener("click",async function(){
+      const data={
+        title:document.title,
+        text:"Check out this cinematic filmmaker website!",
+        url:window.location.href
+      };
+      if(navigator.share){
+        try{await navigator.share(data);}catch(e){}
+      }else if(navigator.clipboard){
+        try{
+          await navigator.clipboard.writeText(window.location.href);
+          alert("Website link copied!");
+        }catch(e){alert(window.location.href);}
+      }else{
+        alert(window.location.href);
+      }
+    });
+  }
+
+  document.querySelectorAll(".stat-number").forEach(function(el){
+    const target=parseInt((el.textContent||"").replace(/[^\d]/g,""),10);
+    if(!Number.isFinite(target) || target<=0) return;
+    const start=performance.now();
+    const duration=1200;
+    function tick(now){
+      const progress=Math.min((now-start)/duration,1);
+      el.textContent=Math.floor(target*progress).toLocaleString();
+      if(progress<1) requestAnimationFrame(tick);
+    }
+    requestAnimationFrame(tick);
+  });
+})();
+</script>
+
+</body>
+</html>

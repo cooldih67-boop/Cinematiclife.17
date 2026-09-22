@@ -1,0 +1,30 @@
+name: Refresh Instagram Token
+
+on:
+  schedule:
+    # Runs weekly, well inside the ~60 day expiry window, so the token never goes stale.
+    - cron: "0 0 * * 0"
+  workflow_dispatch: {}  # lets you trigger it manually to test
+
+jobs:
+  refresh-token:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repo
+        uses: actions/checkout@v4
+
+      - name: Refresh the Instagram access token
+        id: refresh
+        env:
+          IG_ACCESS_TOKEN: ${{ secrets.IG_ACCESS_TOKEN }}
+        run: |
+          RESPONSE=$(curl -s "https://graph.instagram.com/refresh_access_token?grant_type=ig_refresh_token&access_token=${IG_ACCESS_TOKEN}")
+          NEW_TOKEN=$(echo "$RESPONSE" | python3 -c "import sys, json; print(json.load(sys.stdin)['access_token'])")
+          echo "::add-mask::$NEW_TOKEN"
+          echo "new_token=$NEW_TOKEN" >> "$GITHUB_OUTPUT"
+
+      - name: Save the new token back into GitHub Secrets
+        env:
+          GH_TOKEN: ${{ secrets.GH_PAT }}
+        run: |
+          gh secret set IG_ACCESS_TOKEN --body "${{ steps.refresh.outputs.new_token }}" --repo ${{ github.repository }}
